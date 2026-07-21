@@ -152,9 +152,7 @@ public class GuiPCEditing extends Screen{
 		}
 		this.minecraft.getItemRenderer().renderItem(stack, ModelTransformationMode.NONE, false, context.getMatrices(), immediatee, 15728640, OverlayTexture.DEFAULT_UV, mdll);
 		immediatee.draw();
-		if (ble) {
-			DiffuseLighting.enableGuiDepthLighting();
-		}
+		if (ble) DiffuseLighting.enableGuiDepthLighting();
 	}
 
 
@@ -463,14 +461,21 @@ public class GuiPCEditing extends Screen{
 					RenderSystem.enableDepthTest();
 					int offX = 0;
 					int offY = 0;
-					for(File f : ClientMod.isoDirectory.listFiles()) {
-						if(f.getName().endsWith(".iso") || f.getName().endsWith(".ISO")) {
-							if((this.width/2 - 75 + offX) + this.textRenderer.getWidth(f.getName())+10 > this.width/2 + 105) {
-								offX = 0;
-								offY += 14;
+					
+					File dir = ClientMod.isoDirectory;
+					if (dir != null && dir.exists() && dir.isDirectory()) {
+					    File[] files = dir.listFiles();
+					    if (files != null) {
+					        for (File f : files) {
+								if(f.getName().endsWith(".iso")) {
+									if((this.width/2 - 75 + offX) + this.textRenderer.getWidth(f.getName())+10 > this.width/2 + 105) {
+										offX = 0;
+										offY += 14;
+									}
+									this.addDrawableChild(ButtonWidget.builder(Text.literal(f.getName()), (btn) -> insertISO(f.getName())).dimensions(this.width/2 - 75 + offX, this.height / 2 - 62 + offY, this.textRenderer.getWidth(f.getName())+8, 12).build());
+									offX += this.textRenderer.getWidth(f.getName())+10;
+								}
 							}
-							this.addDrawableChild(ButtonWidget.builder(Text.literal(f.getName()), (btn) -> insertISO(f.getName())).dimensions(this.width/2 - 75 + offX, this.height / 2 - 62 + offY, this.textRenderer.getWidth(f.getName())+8, 12).build());
-							offX += this.textRenderer.getWidth(f.getName())+10;
 						}
 					}
 				}else {
