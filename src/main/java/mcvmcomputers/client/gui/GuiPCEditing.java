@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Locale;
 
 import org.apache.commons.lang3.SystemUtils;
 import org.lwjgl.glfw.GLFW;
@@ -467,7 +468,7 @@ public class GuiPCEditing extends Screen{
 					    File[] files = dir.listFiles();
 					    if (files != null) {
 					        for (File f : files) {
-								if(f.getName().endsWith(".iso")) {
+								if (f.getName().toLowerCase(Locale.ROOT).endsWith(".iso")) {
 									if((this.width/2 - 75 + offX) + this.textRenderer.getWidth(f.getName())+10 > this.width/2 + 105) {
 										offX = 0;
 										offY += 14;
